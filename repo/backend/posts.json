@@ -1,0 +1,14 @@
+{
+    "posts": [
+        {
+            "poster": "admin",
+            "tytul": "Heluuuu",
+            "tresc": "adadasdas"
+        },
+        {
+            "poster": "moderator",
+            "tytul": "Nie czas umierać",
+            "tresc": "Heasjdasdas"
+        }
+    ]
+}

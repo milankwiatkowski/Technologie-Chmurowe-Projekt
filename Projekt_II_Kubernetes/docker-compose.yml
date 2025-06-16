@@ -1,0 +1,76 @@
+version: '3.9'
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - appnet
+
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+    environment:
+      DB_HOST: db
+      DB_NAME: postsdb
+      DB_USER: user
+      DB_PASSWORD: password
+    networks:
+      - appnet
+    volumes:
+      - backend_data:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.0
+    command: start-dev
+    ports:
+      - "8080:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: dev-file
+    volumes:
+      - ./keycloak_data:/opt/keycloak/data
+    networks:
+      - appnet
+
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postsdb
+    networks:
+      - appnet
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d postsdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+
+volumes:
+  keycloak_data:
+  db_data:
+  backend_data:
+
+networks:
+  appnet:
+    driver: bridge

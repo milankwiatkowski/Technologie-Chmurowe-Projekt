@@ -12,7 +12,7 @@ function parseJwt(token) {
   const base64 = Buffer.from(base64Url, 'base64').toString('utf-8');
   return JSON.parse(base64);
 }
-
+app.get('/health', async (req, res) => {return res.status(200)})
 app.post('/admin', async (req, res) => {
   const nowypost = await Post.create({
     poster: req.body.poster,
@@ -21,7 +21,7 @@ app.post('/admin', async (req, res) => {
   });
   return res.send(`Post o tytule ${nowypost.tytul} utworzono pomyślnie.`);
 });
-app.get('/health', (req, res) => res.sendStatus(200));
+
 app.get('/admin', async (req, res) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];

@@ -19,7 +19,7 @@ function AdminPanel() {
   async function sendData() {
     const tytul = document.getElementById('tytul').value;
     const tresc = document.getElementById('tresc').value;
-  const response = await fetch('http://localhost:3000/admin', {
+  const response = await fetch('http://localhost:5000/admin', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

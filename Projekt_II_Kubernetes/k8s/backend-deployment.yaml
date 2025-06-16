@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: backend
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: backend
@@ -19,4 +19,9 @@ spec:
             - containerPort: 5000
           env:
             - name: DATABASE_URL
-              value: postgres://postgres:postgres@db:5432/postgres
+              value: postgres://postgres:$(POSTGRES_PASSWORD)@db:5432/postgres
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: POSTGRES_PASSWORD

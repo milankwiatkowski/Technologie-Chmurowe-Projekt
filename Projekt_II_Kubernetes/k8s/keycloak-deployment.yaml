@@ -23,12 +23,10 @@ spec:
               value: admin
             - name: KEYCLOAK_ADMIN_PASSWORD
               value: admin
-            - name: KC_DB
-              value: dev-file
           volumeMounts:
-            - name: keycloak-storage
+            - name: keycloak-data
               mountPath: /opt/keycloak/data
       volumes:
-        - name: keycloak-storage
+        - name: keycloak-data
           persistentVolumeClaim:
-            claimName: keycloak-pvc
+            claimName: pvc-keycloak

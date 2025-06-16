@@ -1,11 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend-deployment
-  labels:
-    app: frontend
+  name: frontend
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: frontend
@@ -18,15 +16,15 @@ spec:
         - name: frontend
           image: milankwiatkowski/frontend:latest
           ports:
-            - containerPort: 3000
+            - containerPort: 80
           env:
             - name: REACT_APP_BACKEND_URL
               valueFrom:
                 configMapKeyRef:
                   name: frontend-app-config
                   key: REACT_APP_BACKEND_URL
-          resources:
-            requests:
-              cpu: "100m"
-            limits:
-              cpu: "300m"
+            - name: REACT_APP_KEYCLOAK_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: frontend-app-config
+                  key: REACT_APP_KEYCLOAK_URL
